@@ -1,0 +1,56 @@
+---
+
+- name: Import the public key used by the package management system
+  shell: apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
+
+
+- name: Install MongoDB repository
+  shell: echo "deb http://repo.mongodb.org/apt/debian stretch/mongodb-org/4.0 main" | tee /etc/apt/sources.list.d/mongodb-org-4.0.list
+
+
+- name: Run the equivalent of "apt-get update" as a separate step
+  apt:
+    update_cache: yes
+
+
+- name: ensure a list of MongoDB packages installed
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - mongodb-org
+    - mongodb-org-server
+    - mongodb-org-mongos
+    - mongodb-org-shell
+    - mongodb-org-tools
+
+
+- name: enable MongoDB service
+  systemd:
+    name: mongod
+    enabled: yes
+
+
+- name: Make sure MongoDB service is running
+  systemd:
+    state: started
+    name: mongod
+
+
+- name: adding firewall rules for 27017/tcp MongoDB
+  command: firewall-cmd --add-port=27017/tcp --permanent
+  notify: Reloading firewalld rules
+
+- name: Copy mongod.conf in /etc
+  copy:
+    src: mongod.conf
+    dest: /etc/mongod.conf
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+
+- name: Restart MongoDB service
+  systemd:
+    state: restarted
+    name: mongod
+

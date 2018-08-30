@@ -1,0 +1,84 @@
+---
+
+- name: disable MongoDB service
+  systemd:
+    name: mongod
+    enabled: false
+
+- name: Make sure MongoDB service is stopped
+  systemd:
+    state: stopped
+    name: mongod
+
+
+
+- name: main | uninstall php 5.6 packages
+  apt: >
+    pkg={{ item }}
+    state=absent
+    purge=yes
+    force=yes
+  with_items:
+    - mongodb-org*
+
+
+- name: Remove useless packages from the cache
+  apt:
+    autoclean: yes
+
+- name: Remove dependencies that are no longer required
+  apt:
+    autoremove: yes
+
+- name: Remove MongoDB log files and directory
+  file:
+    path: /var/log/mongodb
+    state: absent
+
+
+- name: Remove MongoDB Database directory
+  file:
+    path: /var/lib/mongodb
+    state: absent
+
+
+- name: removing firewall rules for 27017/tcp MongoDB
+  command: firewall-cmd --remove-port=27017/tcp --permanent
+  notify: Reloading firewalld rules
+
+
+
+
+
+
+
+
+- name: remove postgresql10-server package
+  yum:
+    name: postgresql10-server
+    state: absent
+
+- name: remove postgresql10-contrib package
+  yum:
+    name: postgresql10-contrib
+    state: absent
+
+
+- name: remove postgresql10 package
+  yum:
+    name: postgresql10
+    state: absent
+
+- name: remove postgresql10-odbc package
+  yum:
+    name: postgresql10-odbc
+    state: absent
+
+
+- name: remove postgres repository 
+  yum: name=pgdg-centos10-10-2.noarch.rpm state=absent
+
+
+- name: removing firewall rules for postgres service
+  command: firewall-cmd --remove-service=postgresql --permanent
+  notify: Reloading firewalld rules
