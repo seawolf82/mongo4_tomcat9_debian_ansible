@@ -44,7 +44,10 @@
 
 
 - name: adding firewall rules for 27017/tcp MongoDB
-  command: firewall-cmd --add-port=27017/tcp --permanent
+  firewalld:
+    port: 27017/tcp
+    permanent: true
+    state: enabled
   notify: Reloading firewalld rules
   tags: mongodb
 

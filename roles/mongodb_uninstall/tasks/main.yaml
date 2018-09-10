@@ -50,7 +50,10 @@
 
 
 - name: removing firewall rules for 27017/tcp MongoDB
-  command: firewall-cmd --remove-port=27017/tcp --permanent
+  firewalld:
+    port: 27017/tcp
+    permanent: true
+    state: disabled
   notify: Reloading firewalld rules
   tags: mongodb 
 
