@@ -23,11 +23,6 @@
   tags: tomcat
 
 
-- name: Remove package tar.gz
-  file: path={{ tomcat_install_path }}/{{ tomcat_package }}
-  state: absent
-  tags: tomcat
-
 - name: Symlink install directory
   file: src={{ tomcat_install_path }}/{{ tomcat_final }} path={{ tomcat_dir }} state=link
   tags: tomcat
