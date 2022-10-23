@@ -9,6 +9,10 @@ https_port: 8443
 admin_username: admin
 admin_password: tomcat_admin
 
+#Java Version
+
+java_package: /usr/lib/jvm/java-17-openjdk-amd64/
+
 
 #User and group for tomcat
 
@@ -21,9 +25,9 @@ tomcat_dir: /usr/share/tomcat
 
 #tomcat_version
 tomcat_branch: tomcat-9 
-tomcat_version: 9.0.11
-tomcat_final: apache-tomcat-9.0.11
-tomcat_package: apache-tomcat-9.0.11.tar.gz
+tomcat_version: 9.0.68
+tomcat_final: apache-tomcat-9.0.68
+tomcat_package: apache-tomcat-9.0.68.tar.gz
 
 #Files & Path
 tomcat_install_path: /opt

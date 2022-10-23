@@ -6,6 +6,12 @@
 #- name: Install openjdk "10" devel
 #  dnf: name=java-openjdk-devel.x86_64 state=present
 
+- name: Install java package
+  package: 
+    name: openjdk-17-jdk
+    state: present
+  tags: java 
+
 - name: add group "tomcat"
   group: name=tomcat
   tags: tomcat

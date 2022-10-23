@@ -1,5 +1,4 @@
 [all]
-horus
-
+192.168.1.242
 [dev-servers]
-horus
+192.168.1.242
